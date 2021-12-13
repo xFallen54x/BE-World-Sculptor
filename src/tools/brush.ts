@@ -12,11 +12,13 @@ class Brush {
     private fillArea: Array<[number, number, number]>
     private player: Player
     private distance: number
-    private enabled: boolean = true 
+    private enabled: boolean = true
+
     constructor(player: Player, type: string, size: number, distance: number) {
         if (type == 'sphere') this.fillArea = this.generateSphere(size)
         if (type == 'cube') this.fillArea = this.generateCube(size)
         this.player = player
+
         this.distance = distance
 
         events.on('ItemUse', (data) => {
@@ -27,11 +29,11 @@ class Brush {
     }
 
     public onEnabled() {
-        this.enabled = true 
+        this.enabled = true
     }
 
     public onDisabled() {
-        this.enabled = false 
+        this.enabled = false
     }
 
     private getRandomBlock(blocks: Array<[string, number]>) {
@@ -45,14 +47,14 @@ class Brush {
         if (!this.enabled) return
         let blocks: Array<[string, number]> = []
         let source = data.source as Player
-        if (this.player.getNameTag() != source.getNameTag())
-            for (let slot = 1; slot != 8; slot++) {
-                const item = source.getInventory().getItem(slot)
-                if (!item) continue
-                blocks.push([item.id, item.data])
-            }
+        if (source.getNameTag() != this.player.getNameTag()) return
+        for (let slot = 1; slot != 8; slot++) {
+            const item = source.getInventory().getItem(slot)
+            if (!item) continue
+            blocks.push([item.id, item.data])
+        }
         for (const [x, y, z] of this.fillArea) {
-            executeCommand(`execute "${source.getExecutableName()}" ^^^${this.distance} fill ~${x} ~${y} ~${z} ~${x} ~${y} ~${z} stone 0 replace air 0`)
+            executeCommand(`execute "${source.getExecutableName()}" ^^^${this.distance} fill ~${x} ~${y} ~${z} ~${x} ~${y} ~${z} ${this.getRandomBlock(blocks)} replace air 0`)
         }
     }
 
@@ -82,5 +84,5 @@ commands.registerCommand({
     'command': 'wsbrush',
     'description': 'World Sculptor paint brush tool'
 }, (data) => {
-    CurrentBrushes.push(new Brush(data.sender, data.args[0], parseInt(data.args[1]), parseInt( data.args[2])))
+    CurrentBrushes.push(new Brush(data.sender, data.args[0], parseInt(data.args[1]), parseInt(data.args[2])))
 })
