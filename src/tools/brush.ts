@@ -1,5 +1,4 @@
 import { BlockLocation, world, Block } from 'mojang-minecraft'
-import { NodeArray, YieldExpression } from 'typescript'
 import {
     commands,
     events,
