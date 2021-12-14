@@ -105,3 +105,5 @@ scripts
 
 # TernJS port file
 .tern-port
+
+scripts/

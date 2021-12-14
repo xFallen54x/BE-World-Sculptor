@@ -6,8 +6,6 @@ export { Player } from './player/Player.js'
 export { entities } from './entity/EntityManager.js'
 export { Entity } from './entity/Entity.js'
 export { world } from './world/WorldManager.js'
-export { socket } from './socket/SocketManager.js'
-export { uuidv4 } from './socket/uuidv4.js'
 export {
   setInterval,
   clearInterval, 
